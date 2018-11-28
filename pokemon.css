@@ -1,0 +1,105 @@
+@font-face {
+  font-family: 'pixel';
+  src:  url('src/font/visitor1.ttf')
+}
+
+
+#mew{background-image:url('src/img/mew.png');}
+#charmander{background-image:url('src/img/charmander.png');}
+#vulpix{background-image:url('src/img/vulpix.png');}
+#eevee{background-image:url('src/img/eevee.png');}
+
+#pikachu{background-image:url('src/img/pikachu.png');}
+#meowth{background-image:url('src/img/meowth.png');}
+#jigglypuff{background-image:url('src/img/jigglypuff.png');}
+#oddish{background-image:url('src/img/oddish.png');}
+
+#lickitung{background-image:url('src/img/lickitung.png');}
+#onix{background-image:url('src/img/onix.png');}
+#squirtle{background-image:url('src/img/squirtle.png');}
+#psyduck{background-image:url('src/img/psyduck.png');}
+
+#magikarp{background-image:url('src/img/magikarp.png');}
+#dragonite{background-image:url('src/img/dragonite.png');}
+#bulbasaur{background-image:url('src/img/bulbasaur.png');}
+#diglett{background-image:url('src/img/diglett.png');}
+
+body {
+    font-size:20px;
+    font-family: pixel;
+    color: #666;
+    text-align:center;
+    background:#ECECEC;
+    max-width: 800px;
+    margin: auto;
+}
+
+table {
+    width: 95%;
+    margin: 0px auto; 
+    border-spacing: 0px;
+}
+
+.square {
+    width: 95%;
+    padding-bottom : 95%; /* = width for a 1:1 aspect ratio */
+    background-position:center center;
+    background-repeat:no-repeat;
+    background-size:contain; /* you change this to "contain" if you don't want the images to be cropped */
+    
+    border: none;
+    border-radius: 15px;
+    box-shadow: 6px 6px 8px #999
+}
+
+.square:active {
+  box-shadow: 4px 4px 4px 0px #666;
+  transform: translate(4px, 4px);
+}
+
+.active {
+  box-shadow: 4px 4px 4px 0px #666;
+  transform: translate(4px, 4px);
+}
+
+#home > img{
+    width: 60%;
+    display: block;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
+#grid {
+    width: 800px;
+}
+
+/* On screens that are 992px wide or less, the background color is blue */
+@media only screen and (max-width: 750px) {
+    #grid {
+        width: 90%;
+    }
+}
+
+/* On screens that are 600px wide or less, the background color is olive */
+@media only screen and (max-width: 400px) {
+    #grid {
+        width: 95%;
+    }
+}
+
+#homeBtn {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
