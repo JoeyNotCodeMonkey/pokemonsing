@@ -1,5 +1,10 @@
 var startTime;
-var source;
+
+var url  = 'src/loop/loop.wav';
+var sound = new Howl({
+    src: [url],
+    loop: true,
+});
 
 var pokemons = [
     "mew", "charmander", "vulpix", "eevee", 
@@ -48,15 +53,19 @@ $(document).ready(function(){
         var multi = Math.floor(currentTime / denominator);
         var waitTime = denominator * (multi + 1) - currentTime;
 
+        //var path = "src/voice/" + pokemon + ".wav";
+        //var snd = new Audio(path);
         var path = "src/voice/" + pokemon + ".wav";
-        var snd = new Audio(path);
+        var snd = new Howl({
+            src: [path],
+        });
+
         locked = true;
         setTimeout(function(){play(snd);}, waitTime);
     }
 
     function play(snd) {
         snd.play();
-        snd.currentTime = 0;
 	    locked = false;
 	}
 
@@ -97,36 +106,9 @@ function renderGrid() {
 }
 
 function startMusic() {
-    var url  = 'src/loop/loop.wav';
-
-    /* --- set up web audio --- */
-    //create the context
-    var context = new AudioContext();
-    //...and the source
-    source = context.createBufferSource();
-    //connect it to the destination so you can hear it.
-    source.connect(context.destination);
-
-    /* --- load buffer ---  */
-    var request = new XMLHttpRequest();
-    //open the request
-    request.open('GET', url, true); 
-    //webaudio paramaters
-    request.responseType = 'arraybuffer';
-    //Once the request has completed... do this
-    request.onload = function() {
-        context.decodeAudioData(request.response, function(response) {
-            /* --- play the sound AFTER the buffer loaded --- */
-            //set the buffer to the response we just received.
-            source.buffer = response;
-            //start(0) should play asap.
-            startTime = $.now();
-            source.start(0);
-            source.loop = true;
-        }, function () { console.error('The request failed.'); } );
-    }
-    //Now that the request has been defined, actually make the request. (send it)
-    request.send();
+    startTime = $.now();
+    sound.play();
+    
 }
 
 function startGame() {
@@ -151,7 +133,7 @@ function back() {
 }
 
 function home() {
-    source.stop(0);
+    sound.stop();
     $('#grid').hide();
     $('#homeBtn').hide();
     $('#home').show();
