@@ -69,6 +69,20 @@ $(document).ready(function(){
 	    locked = false;
 	}
 
+	$(function(){
+	  $( '.square' ).bind( "tap", tapHandler );
+	 
+	  function tapHandler( event ){
+	  	e.preventDefault();
+	  	var id = this.id;
+        $(id).addClass('active');
+        readyPlay(id);
+        setTimeout(function() {
+          $(id).removeClass('active');
+        }, 90);
+	  }
+	});
+
     $(document).keydown(function(e) {
         e.preventDefault();
         var keyCode = e.which;
