@@ -40,6 +40,10 @@ table {
     border-spacing: 0px;
 }
 
+a {
+    text-decoration:none;
+ }
+
 .square {
     width: 95%;
     padding-bottom : 95%; /* = width for a 1:1 aspect ratio */

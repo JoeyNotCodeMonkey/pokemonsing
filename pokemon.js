@@ -1,10 +1,8 @@
 var startTime;
 
-var sound = new Howl({
-    src: "src/loop/loop.wav",
-    preload: true,
-    loop: true
-});
+var sounds = [];
+var current = 0;
+const loopNum = 2;
 
 var pokemons = [
     "mew", "charmander", "vulpix", "eevee", 
@@ -13,24 +11,12 @@ var pokemons = [
     "magikarp", "dragonite", "bulbasaur", "diglett"
 ];
 
-var keyMap = {
-    49 : "mew", //1
-    50 : "charmander", //2
-    51 : "vulpix", //3
-    52 : "eevee", //4
-    81 : "pikachu", //Q
-    87 : "meowth", //W
-    69 : "jigglypuff", //E
-    82 : "oddish", //R
-    65 : "lickitung", //A
-    83 : "onix", //S
-    68 : "squirtle", //D
-    70 : "psyduck", //F
-    90 : "magikarp", //Z
-    88 : "dragonite", //X
-    67 : "bulbasaur", //C
-    86 : "diglett" //V
-};
+var asciis = [
+    49 /*1*/, 50 /*2*/, 51 /*3*/, 52 /*4*/,
+    81 /*Q*/, 87 /*W*/, 69 /*E*/, 82 /*R*/,
+    65 /*A*/, 83 /*S*/, 68 /*D*/, 70 /*F*/, 
+    90 /*Z*/, 88 /*X*/, 67 /*C*/, 86 /*V*/
+];
 
 $(document).ready(function(){
     renderGrid();
@@ -39,7 +25,17 @@ $(document).ready(function(){
 	const denominator = 60 * 1000 / (BPM * 2); //time length per 8th notes
 	var locked = false;
 
+    /* Load loops */
+    for (var i = 0; i < loopNum; i++) {
+        var sound = new Howl({
+            src: ['src/loop/loop' + i + '.wav'],
+            preload: true,
+            loop: true
+        });
+        sounds[i] = sound;
+    }
 
+    /* Load voices */
     var audioMap = {};
     for (i = 0; i < pokemons.length; i++) {
         var path = "src/voice/" + pokemons[i] + ".wav";
@@ -48,6 +44,12 @@ $(document).ready(function(){
             preload: true
         });
         audioMap[pokemons[i]] = snd;
+    }
+
+    /* Build keyMap */
+    var keyMap = {};
+    for (i = 0; i < pokemons.length; i++) {
+        keyMap[asciis[i]] = pokemons[i];
     }
 
 
@@ -93,6 +95,11 @@ $(document).ready(function(){
 
 });//document.ready() end
 
+
+$(window).on("load", function() {
+    console.log("window is loaded");
+});
+
 function renderGrid() {
     var row = 4;
     var col = 4;
@@ -114,8 +121,7 @@ function renderGrid() {
 
 function startMusic() {
     startTime = $.now();
-    sound.play();
-    
+    sounds[current].play();
 }
 
 function startGame() {
@@ -125,8 +131,6 @@ function startGame() {
         $('#homeBtn').fadeIn();
         startMusic();
     }, 1000);
-    
-    
 }
 
 function openAbout() {
@@ -140,8 +144,30 @@ function back() {
 }
 
 function home() {
-    sound.stop();
+    sounds[current].stop();
     $('#grid').hide();
     $('#homeBtn').hide();
     $('#home').show();
+}
+
+function next() {
+    moveCursor(1);
+}
+
+function previous() {
+    moveCursor(-1);
+}
+
+function moveCursor(num) {
+    var currentLoop = sounds[current];
+    currentLoop.fade(1, 0, 500);
+    setTimeout(function(){
+        currentLoop.stop();
+    }, 500);
+
+    startTime = $.now();
+    current = (current + num) % loopNum;
+    
+    sounds[current].fade(0, 1, 500);
+    sounds[current].play();
 }
