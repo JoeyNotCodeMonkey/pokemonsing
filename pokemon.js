@@ -1,9 +1,9 @@
 var startTime;
 
-var url  = 'src/loop/loop.wav';
 var sound = new Howl({
-    src: [url],
-    loop: true,
+    src: "src/loop/loop.wav",
+    preload: true,
+    loop: true
 });
 
 var pokemons = [
@@ -39,6 +39,18 @@ $(document).ready(function(){
 	const denominator = 60 * 1000 / (BPM * 2); //time length per 8th notes
 	var locked = false;
 
+
+    var audioMap = {};
+    for (i = 0; i < pokemons.length; i++) {
+        var path = "src/voice/" + pokemons[i] + ".wav";
+        var snd = new Howl({
+            src: [path],
+            preload: true
+        });
+        audioMap[pokemons[i]] = snd;
+    }
+
+
     $('.square').on('mousedown', function(e){
         e.preventDefault();
         readyPlay(this.id);
@@ -53,12 +65,7 @@ $(document).ready(function(){
         var multi = Math.floor(currentTime / denominator);
         var waitTime = denominator * (multi + 1) - currentTime;
 
-        //var path = "src/voice/" + pokemon + ".wav";
-        //var snd = new Audio(path);
-        var path = "src/voice/" + pokemon + ".wav";
-        var snd = new Howl({
-            src: [path],
-        });
+        var snd = audioMap[pokemon];
 
         locked = true;
         setTimeout(function(){play(snd);}, waitTime);
