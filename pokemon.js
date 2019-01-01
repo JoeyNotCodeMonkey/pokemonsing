@@ -81,6 +81,13 @@ $(document).ready(function(){
     $(document).keydown(function(e) {
         e.preventDefault();
         var keyCode = e.which;
+
+        if (keyCode == 37) {
+            previous();
+        } else if (keyCode == 39) {
+            next();
+        }
+
         if (!(keyCode in keyMap)) {
             return;
         }
@@ -96,9 +103,22 @@ $(document).ready(function(){
 });//document.ready() end
 
 
-$(window).on("load", function() {
-    console.log("window is loaded");
-});
+
+var check = setInterval(checkLoading, 1000);
+
+function checkLoading() {
+    var finished = true;
+    for (var i = 0; i < sounds.length; i++) {
+        if (sounds[i].onload) {
+            finished = false;
+        }
+    }
+
+    if (finished) {
+        clearInterval(check);
+        console.log("finished");
+    }
+}
 
 function renderGrid() {
     var row = 4;
@@ -166,7 +186,7 @@ function moveCursor(num) {
     }, 500);
 
     startTime = $.now();
-    current = (current + num) % loopNum;
+    current = ((current + num) < 0 ? (loopNum - 1) : (current + num)) % loopNum;
     
     sounds[current].fade(0, 1, 500);
     sounds[current].play();
