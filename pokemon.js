@@ -2,7 +2,7 @@ var startTime;
 
 var sounds = [];
 var current = 0;
-const loopNum = 2;
+const loopNum = 3;
 
 var pokemons = [
     "mew", "charmander", "vulpix", "eevee", 
@@ -101,24 +101,6 @@ $(document).ready(function(){
     });
 
 });//document.ready() end
-
-
-
-var check = setInterval(checkLoading, 1000);
-
-function checkLoading() {
-    var finished = true;
-    for (var i = 0; i < sounds.length; i++) {
-        if (sounds[i].onload) {
-            finished = false;
-        }
-    }
-
-    if (finished) {
-        clearInterval(check);
-        console.log("finished");
-    }
-}
 
 function renderGrid() {
     var row = 4;
